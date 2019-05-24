@@ -29,15 +29,15 @@ class User(db.Model):
     password = db.Column(db.String(120))
     blogs = db.relationship('Blog', backref='owner')
 
-    def __init__(self, username, password, blogs):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.blogs = blogs
+       
 
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'register']
+    allowed_routes = ['login', 'signup', 'blog', '/']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('login')
 
@@ -112,30 +112,35 @@ def new_post():
 
 @app.route('/blog', methods=['GET'])
 def blog():
-    if request.args:
+    if request.args.get("id"):
         blog_id = request.args.get("id")
         blog = Blog.query.get(blog_id)
         return render_template('display.html', blog=blog)
+    elif request.args.get("user"):
+        user_id = request.args.get("user")
+        user = User.query.get(user_id)
+        blogs = Blog.query.filter_by(owner=user)
+        return render_template('singleUser.html', blogs=blogs)
     else:
         blogs = Blog.query.all()
-        return render_template('blogs.html', title="Build a Blog", blogs=blogs)
+        return render_template('blogs.html', title="Blogz", blogs=blogs)
         
 
 @app.route('/', methods=['GET'])
 def index():
-    if request.method == 'GET':
-        cheese = "/blog?id=" + str(new_blog.id)
-        return redirect(cheese)
+    users = User.query.all()
+    return render_template('index.html', title="Blogz", users=users)
 
-@app.route('/delete-blog', methods=['blog_id'])
-def delete_blog():
 
-    blog_id = int(request.form['blog_id'])
-    blog = blog.query.get(blog_id)
-    db.session.add(blog)
-    db.session.commit()
-    cheese = "/blog?id=" + str(new_blog.id)
-    return redirect(cheese)
+# @app.route('/delete-blog', methods=['blog_id'])
+# def delete_blog():
+
+#     blog_id = int(request.form['blog_id'])
+#     blog = Blog.query.get(blog_id)
+#     db.session.add(blog)
+#     db.session.commit()
+#     cheese = "/blog?id=" + str(new_blog.id)
+#     return redirect(cheese)
 
 
 if __name__ == '__main__':
