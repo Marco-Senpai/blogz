@@ -66,22 +66,22 @@ def signup():
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
-        
+
         if len(username) < 3 or len(username) > 20 or " " in username:
             flash('Incorrect username', 'error')
-        
+
         elif len(password) < 3 or len(password) > 20 or " " in password:
             flash('Incorrect password', 'error')
-        
+
         elif password != verify:
             flash('passwords do not match', 'error')
-        
+
         else:
             existing_user = User.query.filter_by(username=username).first()
-            
+
             if existing_user:
                 flash("Duplicate User", 'error')
-            
+
             else:
                 new_user = User(username, password)
                 db.session.add(new_user)
@@ -137,11 +137,13 @@ def blog():
         blog_id = request.args.get("id")
         blog = Blog.query.get(blog_id)
         return render_template('display.html', blog=blog)
+
     elif request.args.get("user"):
         user_id = request.args.get("user")
         user = User.query.get(user_id)
         blogs = Blog.query.filter_by(owner=user)
         return render_template('singleUser.html', blogs=blogs)
+
     else:
         blogs = Blog.query.all()
         return render_template('blog.html', title="Blogz", blogs=blogs)

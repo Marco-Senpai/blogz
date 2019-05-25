@@ -10,7 +10,7 @@
         {% for blog in blogs %}
         <h2><a href='./blog?id={{blog.id}}'>{{blog.title}}</h2></a>
         <h3>{{blog.body}}</h3>
-        <p>Author<a href="/blog?user={{blog.owner.id}}">{{blog.owner.username}}</p>
+        <p>Author: <a href="/blog?user={{blog.owner.id}}">{{blog.owner.username}}</p>
         {% endfor %}
         
 

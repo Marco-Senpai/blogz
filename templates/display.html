@@ -2,7 +2,17 @@
 
 {% block content %}
 
-<h2>{{blog.title}}</h2>
-    <h3>{{blog.body}}</h3>
+    {% if blogs|length == 0 %}
+    
+    <p>No blogs here</p>
+    
+    {% else %}
+        
+        {% for blog in blogs %}
+            <h2><a href="./blog?id={{blog.id}}">{{blog.title}}</a></h2>
+            <p>{{blog.body}}</p>
+            <p>Author: <a href="/blog?user={{blog.owner.id}}">{{blogs.owner.username}}</p>
+            
+        {% endfor %}
 
 {% endblock %}
