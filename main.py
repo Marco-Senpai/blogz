@@ -36,7 +36,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', 'blog', 'index']
+    allowed_routes = ['login', 'signup', 'blogList', 'index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -106,8 +106,8 @@ def new_post():
         return render_template('newpost.html', title="New Post")
 
     if request.method == 'POST':
-        blog_title = request.form['blog_title']
-        blog_body = request.form['blog_body']
+        blog_title = request.form['title']
+        blog_body = request.form['body']
         title_error = ""
         body_error = ""
         owner = User.query.filter_by(username=session['username']).first()
@@ -122,9 +122,10 @@ def new_post():
             new_blog = Blog(blog_title, blog_body, owner)
             db.session.add(new_blog)
             db.session.commit()
-            blog = Blog.query.order_by('-id').first()
+            blog = Blog.query.order_by('id').first
             cheese = "/blog?id=" + str(blog.id)
-            return render_template(cheese)
+            return redirect(cheese)
+            # return render_template('singleBlog.html', blog=blog)
         else:
             return render_template('newpost.html',
                                    title="New Post", title_error=title_error,
@@ -136,17 +137,17 @@ def blog():
     if request.args.get("id"):
         blog_id = request.args.get("id")
         blog = Blog.query.get(blog_id)
-        return render_template('display.html', blog=blog)
+        return render_template('singleBlog.html', blog=blog)
 
     elif request.args.get("user"):
         user_id = request.args.get("user")
         user = User.query.get(user_id)
-        blogs = Blog.query.filter_by(owner=user)
+        blogs = Blog.query.filter_by(owner=user).all()
         return render_template('singleUser.html', blogs=blogs)
 
     else:
         blogs = Blog.query.all()
-        return render_template('blog.html', title="Blogz", blogs=blogs)
+        return render_template('blogList.html', title="Blogz", blogs=blogs)
 
 
 @app.route('/', methods=['GET'])

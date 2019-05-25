@@ -2,16 +2,16 @@
 <html>
     <head>
         <title>{{title}}</title>
-    <style>
+    
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css')}}">
     
-    </style>
+    
     
     </head>
 <body>
 <nav>
     <a href="/">Home</a>
-    <a href="/blos">All Blogs</a>
+    <a href="/blog">All Blogs</a>
     <a href="/newpost">New Post</a>
     <a href="/logout">Logout</a>
     <a href="/login">Login</a>
@@ -23,7 +23,9 @@
         {% endfor %}
         </ul>
         {% endwith %}
+    
     {% block content %}
+    
     {% endblock %}
 
 

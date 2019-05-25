@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<h1>{{blogs.owner.username}}'s Blog Posts!</h1>
+<h1>Blog Posts!</h1> 
 
     {% for blog in blogs %}
         <h2><a href="./blog?id={{blog.id}}">{{blog.title}}</a></h2>
         <p>{{blog.body}}</p>
-        <p>Author: <a href="/blog?user={{blog.owner.id}}">{{blogs.owner.username}}</p>
+        <p>Author: <a href="/blog?user={{blog.owner.id}}">{{blog.owner.username}}</p>
     {% endfor %}
 
 {% endblock %}

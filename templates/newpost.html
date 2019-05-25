@@ -6,21 +6,19 @@
 
 
     <h1>Add a Blog Entry</h1>
-    <style>
-        .error{
-            color: red;
-        }
-    </style>
+    
     <form method='POST'>
 
         
-      <label for=title>Blog Title:</label> 
-      <input id=title type="text" name='blog_title' value="{{blog_title}}">
-      <p>{{title_error}}</p>
-      <label>Your blog:</label>
-      <textarea rows="8" cols="25"name='blog_body' value="{{blog_body}}"></textarea>
-      <p>{{body_error}}</p>
+      <label for=title>
+          Blog Title:
+          <input id=title type="text" name='title' value=""/><span>{{title_error}}</span>
+      </label> 
+      <label>
+          Your blog:
+          <textarea name='body' value=""></textarea><span>{{body_error}}</span>
+      </label>
       <input type="submit" value='Submit' />
     </form>
 
-    {% endblock %}
+{% endblock %}
